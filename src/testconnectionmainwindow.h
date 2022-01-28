@@ -92,6 +92,12 @@ class NetworkManager : public QObject {
   NetworkManager(QObject *parent = 0);
   ~NetworkManager();
 
+ public:
+  enum {
+    CONNECTION_SUCCESS,
+    CONNECTION_FAILURE,
+  };
+
  private:
   QPointer<TestNetworkManager> testNetworkManager;
 };
