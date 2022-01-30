@@ -8,32 +8,35 @@ class CookiesHandler;
 class TestNetworkManager : public QObject {
   Q_OBJECT
 
- public:
+public:
   TestNetworkManager(QObject *parent = 0);
   ~TestNetworkManager();
 
- public:
-  //  void sendGetRequest(const QUrl &url, const QByteArray &data);
-  //  void sendPostRequest(const QUrl &url, const QByteArray &data);
+  enum RequestResult {
+    FAILURE = 0,
+    SUCCESS,
+  };
 
- private:
-  QNetworkAccessManager *_networkManager;
+public:
+  RequestResult send();
+
+private:
   CookiesHandler *_cookiesHandler;
 };
 
 class CookiesHandler : public QObject {
   Q_OBJECT
 
- public:
-  CookiesHandler(QNetworkAccessManager *networkManager, QObject *parent = 0);
+public:
+  CookiesHandler(QObject *parent = 0);
   ~CookiesHandler();
 
- public:
+public:
   void sendGetRequest(const QUrl &url, const QByteArray &data);
   void sendPostRequest(const QUrl &url, const QByteArray &data);
 
- private:
+private:
   QNetworkAccessManager *_networkManager;
 };
 
-#endif  // TESTNETWORKMANAGER_H
+#endif // TESTNETWORKMANAGER_H

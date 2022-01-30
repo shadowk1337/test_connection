@@ -10,7 +10,7 @@ class TestConnectionMainWindowContent;
 class NetworkManager;
 
 class ConnectionLink : public QUrl {
- public:
+public:
   ConnectionLink() : QUrl() {}
   ConnectionLink(const QString &url,
                  QUrl::ParsingMode parsingMode = TolerantMode)
@@ -30,10 +30,10 @@ class ConnectionLink : public QUrl {
     return *this;
   }
 
- public:
+public:
   QString parsed();
 
- private:
+private:
   QString _url;
 };
 
@@ -46,60 +46,70 @@ QT_END_NAMESPACE
 class TestConnectionMainWindow : public QMainWindow {
   Q_OBJECT
 
- public:
+public:
   TestConnectionMainWindow(QWidget *parent = nullptr);
   ~TestConnectionMainWindow();
 
- public:
+public:
   void setWindowGeometry(int width, int height);
 
- public:
+public:
   void setConnections();
 
- public slots:
+public slots:
   void keyPressEvent(QKeyEvent *event);
 
- private:
+private:
   Ui::TestConnectionMainWindow *ui;
-  const int _w = 220, _h = 186;
-  QPointer<TestConnectionMainWindowContent> content;
-  QPointer<NetworkManager> networkManager;
+  const int _w = 300, _h = 186;
+  QPointer<TestConnectionMainWindowContent> _windowContent;
 };
 
 class TestConnectionMainWindowContent : public QObject {
   Q_OBJECT
 
- public:
+public:
   TestConnectionMainWindowContent(Ui::TestConnectionMainWindow *ui,
                                   QObject *parent = 0);
 
- public:
+public:
+  void fillSiteList();
   void setConnections();
 
- public slots:
+public slots:
+  void onComboBoxCurrentIndexChanged(int index);
   void onButtonPressed();
 
- private:
+private:
   Ui::TestConnectionMainWindow *ui;
-  QString _welcomeHeader = "Log in to the site";
-  ConnectionLink _siteName = QString("http://vk.com");
+  QPointer<NetworkManager> _networkManager;
+  ConnectionLink _siteName;
+  const QString _welcomeHeader = "Log in to the site";
+  const QList<QString> _siteList = {"vk.com", "mail.ru"};
+
+private:
+  struct RequestResWrapper {
+    QString content;
+    QColor color;
+  };
+
+  RequestResWrapper failure{"Request failed", Qt::red},
+      success{"Request success", Qt::green};
 };
 
 class NetworkManager : public QObject {
   Q_OBJECT
 
- public:
+public:
   NetworkManager(QObject *parent = 0);
   ~NetworkManager();
 
- public:
-  enum {
-    CONNECTION_SUCCESS,
-    CONNECTION_FAILURE,
-  };
+public:
+  TestNetworkManager::RequestResult
+  send(const QString &url, const QString &login, const QString &password);
 
- private:
+private:
   QPointer<TestNetworkManager> testNetworkManager;
 };
 
-#endif  // TESTCONNECTION_H
+#endif // TESTCONNECTION_H

@@ -1,19 +1,17 @@
-#include "testconnectionmainwindow.h"
+﻿#include "testconnectionmainwindow.h"
 
 #include <QSizePolicy>
+#include <QtGlobal>
 #include <QtWidgets>
 
 #include "ui_testconnectionmainwindow.h"
 
-QString ConnectionLink::parsed() {
-  return _url;
-}
+QString ConnectionLink::parsed() { return _url; }
 
 TestConnectionMainWindow::TestConnectionMainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::TestConnectionMainWindow) {
   ui->setupUi(this);
-  content = new TestConnectionMainWindowContent(ui);
-  networkManager = new NetworkManager();
+  _windowContent = new TestConnectionMainWindowContent(ui);
   setWindowGeometry(_w, _h);
   setConnections();
 }
@@ -30,7 +28,7 @@ void TestConnectionMainWindow::setConnections() {}
 
 void TestConnectionMainWindow::keyPressEvent(QKeyEvent *event) {
   if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return) {
-    content->onButtonPressed();
+    _windowContent->onButtonPressed();
   }
 }
 
@@ -38,21 +36,41 @@ TestConnectionMainWindowContent::TestConnectionMainWindowContent(
     Ui::TestConnectionMainWindow *ui, QObject *parent)
     : QObject(parent) {
   this->ui = ui;
+  _networkManager = new NetworkManager();
   this->ui->label->setText(_welcomeHeader + " " + _siteName.toString());
+  fillSiteList();
   setConnections();
 }
 
+void TestConnectionMainWindowContent::fillSiteList() {
+  ui->comboBox->addItem("None");
+  for (const QString &site : _siteList) {
+    ui->comboBox->addItem(site);
+  }
+}
+
 void TestConnectionMainWindowContent::setConnections() {
+  connect(ui->comboBox, QOverload<int>::of(&QComboBox::currentIndexChanged),
+          this, TestConnectionMainWindowContent::onComboBoxCurrentIndexChanged);
   connect(ui->pushButton, &QPushButton::pressed, this,
           &TestConnectionMainWindowContent::onButtonPressed);
+}
+
+void TestConnectionMainWindowContent::onComboBoxCurrentIndexChanged(int index) {
+  ui->pushButton->setEnabled(index ? true : false);
 }
 
 void TestConnectionMainWindowContent::onButtonPressed() {
   QString login = ui->lineEdit_login->text();
   QString password = ui->lineEdit_password->text();
+  _networkManager->send(_siteName.toString(), login, password);
 }
 
 NetworkManager::NetworkManager(QObject *parent)
     : QObject(parent), testNetworkManager(new TestNetworkManager) {}
 
 NetworkManager::~NetworkManager() {}
+
+TestNetworkManager::RequestResult
+NetworkManager::send(const QString &url, const QString &login,
+                     const QString &password) {}
