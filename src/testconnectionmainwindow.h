@@ -85,7 +85,7 @@ private:
   QPointer<NetworkManager> _networkManager;
   ConnectionLink _siteName;
   const QString _welcomeHeader = "Log in to the site";
-  const QList<QString> _siteList = {"vk.com", "mail.ru"};
+  QList<QString> _siteList = {"vk.com", "mail.ru", "yandex.ru"};
 
 private:
   struct RequestResWrapper {

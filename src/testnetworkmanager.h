@@ -2,6 +2,7 @@
 #define TESTNETWORKMANAGER_H
 
 #include <QNetworkAccessManager>
+#include <QPointer>
 
 class CookiesHandler;
 
@@ -37,6 +38,14 @@ public:
 
 private:
   QNetworkAccessManager *_networkManager;
+};
+
+class QtCurlManager {
+public:
+  QtCurlManager();
+
+public:
+  void setOptions();
 };
 
 #endif // TESTNETWORKMANAGER_H

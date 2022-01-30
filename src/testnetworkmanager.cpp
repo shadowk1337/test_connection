@@ -1,5 +1,6 @@
-#include "testnetworkmanager.h"
+﻿#include "testnetworkmanager.h"
 
+#include "QtCUrl.h"
 #include <QNetworkCookieJar>
 
 TestNetworkManager::TestNetworkManager(QObject *parent) : QObject(parent) {
@@ -25,4 +26,10 @@ void CookiesHandler::sendGetRequest(const QUrl &url, const QByteArray &data) {
 void CookiesHandler::sendPostRequest(const QUrl &url, const QByteArray &data) {
   QNetworkRequest r(url);
   _networkManager->post(r, data);
+}
+
+QtCurlManager::QtCurlManager() {
+  //  QtCUrl cUrl;
+
+  //  _cUrl.setTextCodec("UTF-8");
 }

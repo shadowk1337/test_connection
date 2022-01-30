@@ -27,6 +27,9 @@ void TestConnectionMainWindow::setWindowGeometry(int width, int height) {
 void TestConnectionMainWindow::setConnections() {}
 
 void TestConnectionMainWindow::keyPressEvent(QKeyEvent *event) {
+  if (!ui->pushButton->isEnabled()) {
+    return;
+  }
   if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return) {
     _windowContent->onButtonPressed();
   }
@@ -44,14 +47,15 @@ TestConnectionMainWindowContent::TestConnectionMainWindowContent(
 
 void TestConnectionMainWindowContent::fillSiteList() {
   ui->comboBox->addItem("None");
+  qSort(_siteList);
   for (const QString &site : _siteList) {
     ui->comboBox->addItem(site);
   }
 }
 
 void TestConnectionMainWindowContent::setConnections() {
-  connect(ui->comboBox, QOverload<int>::of(&QComboBox::currentIndexChanged),
-          this, TestConnectionMainWindowContent::onComboBoxCurrentIndexChanged);
+  connect(ui->comboBox, SIGNAL(currentIndexChanged(int)), this,
+          SLOT(onComboBoxCurrentIndexChanged(int)));
   connect(ui->pushButton, &QPushButton::pressed, this,
           &TestConnectionMainWindowContent::onButtonPressed);
 }
@@ -63,6 +67,7 @@ void TestConnectionMainWindowContent::onComboBoxCurrentIndexChanged(int index) {
 void TestConnectionMainWindowContent::onButtonPressed() {
   QString login = ui->lineEdit_login->text();
   QString password = ui->lineEdit_password->text();
+  qDebug() << "LOGIN: " << login << "PASSWORD: " << password;
   _networkManager->send(_siteName.toString(), login, password);
 }
 

@@ -9,7 +9,7 @@ int main(int argc, char *argv[]) {
   QApplication::setOrganizationDomain("bmstu.ru");
 
   QTranslator translator;
-  translator.load("qt_ru",
+  translator.load("qt_en",
                   QLibraryInfo::location(QLibraryInfo::TranslationsPath));
   qApp->installTranslator(&translator);
 
