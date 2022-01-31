@@ -11,4 +11,4 @@ Makefile
 
 *.stash
 
-
+test_connection/ui*
