@@ -1,2 +1,2 @@
 INCLUDEPATH += $$PWD/src
-LIBS += -lcurl
+LIBS += -L../lib -lqtcurl
