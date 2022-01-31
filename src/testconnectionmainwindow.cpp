@@ -73,10 +73,11 @@ void TestConnectionMainWindowContent::onButtonPressed() {
 }
 
 NetworkManager::NetworkManager(QObject *parent)
-    : QObject(parent), testNetworkManager(new TestNetworkManager) {}
+    : QObject(parent), _testNetworkManager(new TestNetworkManager) {}
 
 NetworkManager::~NetworkManager() {}
 
-TestNetworkManager::RequestResult
-NetworkManager::send(const QString &url, const QString &login,
-                     const QString &password) {}
+TestNetworkManager::RequestResult NetworkManager::send(
+    const QString &url, const QString &login, const QString &password) {
+  return _testNetworkManager->send({url, login, password});
+}

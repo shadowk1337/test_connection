@@ -88,12 +88,12 @@ private:
   QList<QString> _siteList = {"vk.com", "mail.ru", "yandex.ru"};
 
 private:
-  struct RequestResWrapper {
+  struct RequestResultWrapper {
     QString content;
     QColor color;
   };
 
-  RequestResWrapper failure{"Request failed", Qt::red},
+  RequestResultWrapper failure{"Request failed", Qt::red},
       success{"Request success", Qt::green};
 };
 
@@ -109,7 +109,7 @@ public:
   send(const QString &url, const QString &login, const QString &password);
 
 private:
-  QPointer<TestNetworkManager> testNetworkManager;
+  QPointer<TestNetworkManager> _testNetworkManager;
 };
 
 #endif // TESTCONNECTION_H
