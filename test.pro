@@ -1,4 +1,6 @@
 TEMPLATE = subdirs
 
-SUBDIRS += test_connection
 SUBDIRS += qtcurl
+SUBDIRS += test_connection
+
+CONFIG += ordered

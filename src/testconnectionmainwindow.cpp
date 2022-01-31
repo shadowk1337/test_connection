@@ -22,6 +22,7 @@ void TestConnectionMainWindow::setWindowGeometry(int width, int height) {
   const QRect &r = QGuiApplication::primaryScreen()->availableGeometry();
   move(qAbs(r.width() - width) / 2, qAbs(r.height() - height) / 2);
   setFixedSize(_w, _h);
+  this->statusBar()->setSizeGripEnabled(false);
 }
 
 void TestConnectionMainWindow::setConnections() {}

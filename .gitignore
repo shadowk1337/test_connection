@@ -1,0 +1,5 @@
+qtcurl/libqt*
+*/Makefile
+*/*.o
+*/moc_*
+

@@ -30,6 +30,5 @@ void CookiesHandler::sendPostRequest(const QUrl &url, const QByteArray &data) {
 
 QtCurlManager::QtCurlManager() {
   //  QtCUrl cUrl;
-
   //  _cUrl.setTextCodec("UTF-8");
 }

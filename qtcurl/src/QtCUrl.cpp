@@ -76,7 +76,6 @@ QtCUrl::QtCUrl(): _textCodec(0) {
 	_errorBuffer = new char[CURL_ERROR_SIZE];
 }
 
-
 QtCUrl::~QtCUrl() {
 	while(_slist.count()) {
 		curl_slist_free_all(_slist.first());
