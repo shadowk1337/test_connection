@@ -1,5 +1,14 @@
 qtcurl/libqt*
+
+Makefile
 */Makefile
+
 */*.o
 */moc_*
+
+*.pro.user
+*/*.pro.user
+
+*.stash
+
 
