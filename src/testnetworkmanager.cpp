@@ -1,7 +1,7 @@
 ﻿#include "testnetworkmanager.h"
 
+#include <QDir>
 #include <QNetworkCookieJar>
-#include "QtCUrl.h"
 
 TestNetworkManager::TestNetworkManager(QObject *parent)
     : QObject(parent),
@@ -10,22 +10,51 @@ TestNetworkManager::TestNetworkManager(QObject *parent)
 
 TestNetworkManager::~TestNetworkManager() {}
 
-TestNetworkManager::RequestResult TestNetworkManager::send(
+TestNetwork::RequestResult TestNetworkManager::send(
     const TestNetwork::RequestPackage &package) {
   _curlManager->setPackage(package);
+  _curlManager->sendRequest();
   if (true) {
-    return SUCCESS;
+    return TestNetwork::SUCCESS;
   } else {
-    return FAILURE;
+    return TestNetwork::FAILURE;
   }
 }
 
 QtCurlManager::QtCurlManager(QObject *parent) : QObject(parent) {
-  QtCUrl cUrl;
-  cUrl.setTextCodec("UTF-8");
+  _curl.setTextCodec("Windows-1251");
 }
 
-void QtCurlManager::setOptions() {}
+TestNetwork::RequestResult QtCurlManager::sendPostRequest() {
+  QtCUrl::Options options;
+//  options[CURLOPT_URL] = _package.url;
+//  options[CURLOPT_POST] = true;
+//  QUrlQuery urlQuery;
+//  urlQuery.addQueryItem("username", _package.login);
+//  urlQuery.addQueryItem("password", _package.password);
+//  options[CURLOPT_POSTFIELDS] = QUrl(urlQuery.toString());
+//  options[CURLOPT_SSL_VERIFYHOST] = false;
+//  options[CURLOPT_SSL_VERIFYPEER] = false;
+//  options[CURLOPT_COOKIEJAR] = QDir::currentPath() + "/cookie.txt";
+//  options[CURLOPT_USERAGENT] = _userAgent;
+//  options[CURLOPT_REFERER] = "";  // TODO
+//  options[CURLOPT_FOLLOWLOCATION] = false;
+
+  QString result = _curl.exec(options);
+  if (_curl.lastError().isOk()) {
+    qDebug() << result;
+    return TestNetwork::SUCCESS;
+  } else {
+    qDebug() << QString("ERROR: %1\nBUFFER: %2")
+                    .arg(_curl.lastError().text())
+                    .arg(_curl.errorBuffer());
+    return TestNetwork::FAILURE;
+  }
+}
+
+TestNetwork::RequestResult QtCurlManager::sendGetRequest() {
+  return TestNetwork::SUCCESS;
+}
 
 void QtCurlManager::setPackage(const TestNetwork::RequestPackage &package) {
   _package = package;

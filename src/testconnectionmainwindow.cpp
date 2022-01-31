@@ -77,7 +77,8 @@ NetworkManager::NetworkManager(QObject *parent)
 
 NetworkManager::~NetworkManager() {}
 
-TestNetworkManager::RequestResult NetworkManager::send(
-    const QString &url, const QString &login, const QString &password) {
+TestNetwork::RequestResult NetworkManager::send(const QString &url,
+                                                const QString &login,
+                                                const QString &password) {
   return _testNetworkManager->send({url, login, password});
 }

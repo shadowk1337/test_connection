@@ -105,7 +105,7 @@ public:
   ~NetworkManager();
 
 public:
-  TestNetworkManager::RequestResult
+  TestNetwork::RequestResult
   send(const QString &url, const QString &login, const QString &password);
 
 private:

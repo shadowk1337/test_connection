@@ -1,6 +1,8 @@
 #ifndef TESTNETWORKMANAGER_H
 #define TESTNETWORKMANAGER_H
 
+#include "QtCUrl.h"
+
 #include <QNetworkAccessManager>
 #include <QPointer>
 #include <QStringList>
@@ -11,21 +13,24 @@ class CookiesHandler;
 
 QT_BEGIN_NAMESPACE
 namespace TestNetwork {
-typedef bool CURLOPT_POST;
-typedef bool CURLOPT_FOLLOWACTION;
-typedef bool CURLOPT_FAILONERROR;
-typedef bool CURLOPT_SSL_VERIFYHOST;
-typedef bool CURLOPT_SSL_VERIFYPEER;
-typedef bool CURLOPT_RETURNTRANSFER;
-typedef bool CURLOPT_FOLLOWLOCATION;
-typedef QUrlQuery CURLOPT_URL;
-typedef QStringList CURLOPT_HTTPHEADER;
-typedef QString CURLOPT_COOKIEJAR;
-typedef QString CURLOPT_USERAGENT;
-typedef QString CURLOPT_REFERER;
+// enum CurlOptions {
+//  CURLOPT_POST = 0,  // bool
+//  CURLOPT_FOLLOWACTION,
+//  CURLOPT_FAILONERROR,
+//  URLOPT_SSL_VERIFYHOST,
+//  URLOPT_SSL_VERIFYPEER,
+//  URLOPT_RETURNTRANSFER,
+//  URLOPT_FOLLOWLOCATION,
+//  CURLOPT_URL,         // QUrlQuery
+//  CURLOPT_HTTPHEADER,  // QStringList
+//  CURLOPT_COOKIEJAR,   // QString
+//  CURLOPT_USERAGENT,
+//  CURLOPT_REFERER,
+//};
 
-struct QtCurlOptions {
-  CURLOPT_URL url;
+enum RequestResult {
+  FAILURE = 0,
+  SUCCESS,
 };
 
 struct RequestPackage {
@@ -43,13 +48,8 @@ class TestNetworkManager : public QObject {
   TestNetworkManager(QObject *parent = 0);
   ~TestNetworkManager();
 
-  enum RequestResult {
-    FAILURE = 0,
-    SUCCESS,
-  };
-
  public:
-  RequestResult send(const TestNetwork::RequestPackage &package);
+  TestNetwork::RequestResult send(const TestNetwork::RequestPackage &package);
 
  private:
   QPointer<CookiesHandler> _cookiesHandler;
@@ -63,11 +63,19 @@ class QtCurlManager : public QObject {
   QtCurlManager(QObject *parent = 0);
 
  public:
-  void setOptions();
+  TestNetwork::RequestResult sendRequest();
   void setPackage(const TestNetwork::RequestPackage &package);
 
  private:
+  TestNetwork::RequestResult sendPostRequest();
+  TestNetwork::RequestResult sendGetRequest();
+
+ private:
+  QtCUrl _curl;
   TestNetwork::RequestPackage _package;
+  const QString _userAgent =
+      "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) "
+      "Chrome/35.0.2309.372 Safari/537.36";
 };
 
 class CookiesHandler : public QObject {
