@@ -1,14 +1,12 @@
 qtcurl/libqt*
 
-Makefile
-*/Makefile
+**/Makefile
 
-*/*.o
-*/moc_*
+**/*.o
+**/moc_*
 
-*.pro.user
-*/*.pro.user
+**/*.pro.user
 
-*.stash
+**/*.stash
 
 test_connection/ui*
