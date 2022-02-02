@@ -41,7 +41,7 @@ TestConnectionMainWindowContent::TestConnectionMainWindowContent(
     : QObject(parent) {
   this->ui = ui;
   _networkManager = new NetworkManager();
-  this->ui->label->setText(_welcomeHeader + " " + _siteName.toString());
+  this->ui->label->setText(_welcomeHeader);
   fillSiteList();
   setConnections();
 }
