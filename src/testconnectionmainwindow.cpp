@@ -80,5 +80,6 @@ NetworkManager::~NetworkManager() {}
 TestNetwork::RequestResult NetworkManager::send(const QString &url,
                                                 const QString &login,
                                                 const QString &password) {
+  qDebug() << url;
   return _testNetworkManager->send({url, login, password});
 }

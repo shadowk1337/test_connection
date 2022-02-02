@@ -47,7 +47,7 @@ class TestConnectionMainWindow : public QMainWindow {
   Q_OBJECT
 
 public:
-  TestConnectionMainWindow(QWidget *parent = nullptr);
+  explicit TestConnectionMainWindow(QWidget *parent = nullptr);
   ~TestConnectionMainWindow();
 
 public:
@@ -69,7 +69,7 @@ class TestConnectionMainWindowContent : public QObject {
   Q_OBJECT
 
 public:
-  TestConnectionMainWindowContent(Ui::TestConnectionMainWindow *ui,
+  explicit TestConnectionMainWindowContent(Ui::TestConnectionMainWindow *ui,
                                   QObject *parent = 0);
 
 public:
@@ -83,7 +83,8 @@ public slots:
 private:
   Ui::TestConnectionMainWindow *ui;
   QPointer<NetworkManager> _networkManager;
-  ConnectionLink _siteName;
+  ConnectionLink _siteName = QString("https://account.mail.ru");
+
   const QString _welcomeHeader = "Log in to the site";
   QList<QString> _siteList = {"vk.com", "mail.ru", "yandex.ru"};
 
@@ -101,7 +102,7 @@ class NetworkManager : public QObject {
   Q_OBJECT
 
 public:
-  NetworkManager(QObject *parent = 0);
+  explicit NetworkManager(QObject *parent = 0);
   ~NetworkManager();
 
 public:
